@@ -7,6 +7,11 @@ using System.Text;
 
 public class NPCController : MonoBehaviour
 {
+    // Player reference
+    public Transform player;
+
+    // Maximum interaction distance
+    public float interactionDistance = 3f;
     // Input field where player types
     public TMP_InputField playerInput;
 
@@ -17,9 +22,25 @@ public class NPCController : MonoBehaviour
     private string apiUrl =
         "http://127.0.0.1:8000/chat";
 
+
     // Called automatically when button clicked
     public void SendMessage()
     {
+        // Distance between player and NPC
+        float distance =
+            Vector3.Distance(
+                player.position,
+                transform.position
+            );
+
+        // Too far away
+        if (distance > interactionDistance)
+        {
+            dialogueText.text =
+                "Come closer to interact.";
+
+            return;
+        }
         // Get player text
         string message = playerInput.text;
 
